@@ -5,6 +5,7 @@ import { BookModule } from './book/book.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Book } from './book/entities/book.entity';
+import { GenreModule } from './genre/genre.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -24,7 +25,9 @@ import { Book } from './book/entities/book.entity';
     },
   }),
   
-  BookModule],
+  BookModule,
+  
+  GenreModule],
   controllers: [AppController],
   providers: [AppService],
 })

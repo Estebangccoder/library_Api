@@ -1,11 +1,33 @@
-import { Injectable } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Book } from './entities/book.entity';
+import { Repository, QueryFailedError} from 'typeorm';
+import { InternalServerErrorException } from '@nestjs/common';
+import { ADDRCONFIG } from 'dns';
 
-@Injectable()
+
 export class BookService {
-  create(createBookDto: CreateBookDto) {
-    return 'This action adds a new book';
+  
+  constructor(@InjectRepository(Book)
+  private readonly bookRepository: Repository<Book>,
+ 
+){}
+  
+  async create(createBookDto: CreateBookDto) {
+    try{
+      const Book = this.bookRepository.create(createBookDto);
+
+      Book.isavailable = true;
+
+      const newBook = await this.bookRepository.save(Book);
+      return newBook;
+    }catch(error){
+      if (error instanceof QueryFailedError) {
+        throw new QueryFailedError("Bad request", undefined, error);
+      }
+      throw new InternalServerErrorException(error.message || "Internal server error");
+    }  
   }
 
   findAll() {

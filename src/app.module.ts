@@ -22,6 +22,7 @@ import { GenreModule } from './genre/genre.module';
     synchronize: false,
     ssl: {
       rejectUnauthorized: false, // Pilas quitar en produccion
+      ca: process.env.DS_SSL_CA,
     },
   }),
   

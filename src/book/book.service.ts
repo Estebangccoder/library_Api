@@ -77,7 +77,20 @@ export class BookService {
     
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} book`;
+  async remove(id: string) {
+    try {
+    
+      const bookFound = await this.bookRepository.find({where:{id}})
+    if (!bookFound) {
+      throw new NotFoundException("Book not found")
+    }
+
+    const result = await this.bookRepository.softRemove(bookFound)
+      
+    } catch (error) {
+      
+    }
   }
+
+ 
 }

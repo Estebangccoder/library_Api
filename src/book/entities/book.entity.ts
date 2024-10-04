@@ -21,6 +21,9 @@ export class Book {
     @Column({type: 'varchar', nullable: false})
     genre_id: string;
 
+    @DeleteDateColumn({ type: 'timestamp', nullable: true })
+    delete_at: Date;
+
     @ManyToOne(() => Genre, genre => genre.books)
     @JoinColumn({ name: 'genre_id' })
     genre: Genre;

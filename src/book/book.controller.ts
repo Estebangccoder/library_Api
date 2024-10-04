@@ -3,7 +3,7 @@ import { BookService } from './book.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 
-@Controller('book')
+@Controller('books')
 export class BookController {
   constructor(private readonly bookService: BookService) {}
 
@@ -17,7 +17,22 @@ export class BookController {
     return this.bookService.findAll();
   }
 
-  @Get("searchbyauthor") //endppint /searchbyauthor?author=
+  @Get('searchById') // endpoint /searchById?id=
+  findById(@Query('id') id: string) {
+    if(!id){
+      throw new HttpException('Id is required', HttpStatus.BAD_REQUEST)
+    }
+
+    try {
+      return this.bookService.findById(id);  
+    } catch (error) {
+      throw new HttpException('Book not found', HttpStatus.NOT_FOUND)
+      
+    }
+  }
+
+
+  @Get("searchByAuthor") //endpoint /searchByAuthor?author=
   findByAuthor(@Query('author') author: string) {
 
     if(!author){

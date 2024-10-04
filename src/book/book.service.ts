@@ -34,6 +34,13 @@ export class BookService {
   findAll() {
     return `This action returns all book`;
   }
+
+  async findById(id: string) {
+    const book = await this.bookRepository.find({where: {id}, relations:['genre']})
+    return book
+
+  }
+
   async findByAuthor(author: string) {
     // try{}catch(error){}
     const booksAuthor = await this.bookRepository.find({where: {author: Like(`%${author.toLowerCase().trim()}%`)}})

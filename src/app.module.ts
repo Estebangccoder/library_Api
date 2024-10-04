@@ -21,11 +21,12 @@ import { LowercaseMiddleware } from './common/middleware/lowercase.middleware';
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
     entities: [__dirname + '**/**/*.entity{.ts,.js}', Book],
-    synchronize: false,
+    synchronize: true,
     ssl: {
-      rejectUnauthorized: false, // Pilas quitar en produccion
+      rejectUnauthorized: true, // Pilas quitar en produccion
       ca: process.env.DS_SSL_CA,
     },
+    
   }),
 
     BookModule,

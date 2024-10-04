@@ -12,11 +12,7 @@ export class BookController {
     return this.bookService.create(createBookDto);
   }
 
-  @Get()
-  findAll() {
-    return this.bookService.findAll();
-  }
-
+ 
   @Get('searchById') // endpoint /searchById?id=
   findById(@Query('id') id: string) {
     if(!id){
@@ -56,7 +52,7 @@ export class BookController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
 
-    return this.bookService.update(+id, updateBookDto);
+    return this.bookService.update(id, updateBookDto);
   }
 
   @Delete(':id')

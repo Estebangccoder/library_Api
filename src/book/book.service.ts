@@ -3,7 +3,7 @@ import { UpdateBookDto } from './dto/update-book.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Book } from './entities/book.entity';
 import { Repository, QueryFailedError, Like } from 'typeorm';
-import { BadRequestException, HttpException, HttpStatus, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { error } from 'console';
 
 
@@ -29,10 +29,6 @@ export class BookService {
       }
       throw new InternalServerErrorException(error.message || "Internal server error");
     }
-  }
-
-  findAll() {
-    return `This action returns all book`;
   }
 
   async findById(id: string) {
@@ -69,8 +65,16 @@ export class BookService {
     }
   
 
-  update(id: number, updateBookDto: UpdateBookDto) {
-    return `This action updates a #${id} book`;
+  async update(id: string, updateBookDto: UpdateBookDto) {
+    const bookFound = await this.bookRepository.find({where:{id}})
+
+    if(!bookFound) {
+      throw new NotFoundException("Book not found")
+    }
+
+    const result = await this.bookRepository.update(id, updateBookDto);
+    return Response.json({"message":"Updated book"})
+    
   }
 
   remove(id: number) {
